@@ -1,5 +1,7 @@
 " Author: Daniel Csillag
 
+let g:todorefs_enabled = 1
+
 function! MatchStrPosAll(expr, pat, ...)
     let start = a:0 ? a:1 : 0
     let lst = []
@@ -14,10 +16,12 @@ function! MatchStrPosAll(expr, pat, ...)
 endfunction
 
 function! CountTODOs()
-    let l:pattern = "\\<TODO\\>\\|\\<FIXME\\>\\|\\<BUG\\>"
+    if g:todorefs_enabled
+        let l:pattern = "\\<TODO\\>\\|\\<FIXME\\>\\|\\<BUG\\>"
 
-    let b:todorefs_todos = []
-    call map(getline(1,'$'), { i,v -> extend(b:todorefs_todos, map(MatchStrPosAll(v, l:pattern), { j,w -> [i+1] + w })) })
+        let b:todorefs_todos = []
+        call map(getline(1,'$'), { i,v -> extend(b:todorefs_todos, map(MatchStrPosAll(v, l:pattern), { j,w -> [i+1] + w })) })
+    endif
 endfunction
 
 augroup todo_refs
